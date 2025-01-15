@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<head></head>
+<body>
+    <fieldset style="width:380px">
+    <legend><h4 style="color:tomato">Personal Details</h4></legend>
+    <form>
+    <p>
+        <label for="a">Name:</label>
+        <input id="a" type="text" name="Name"></p>
+    <p>
+        <label for="b">Password:</label>
+        <input id="b" type="password"></p>
+    <label>E-Mail ID:</label><input type="email"><br><br>
+    <label>Gender:</label>
+    <input type="radio" id="Male" value="Male" name="gender">Male
+    <input type="radio"  id="Male" value="Female" name="gender">Female<br><br>
+    <label>DOB :</label><input type="date"><br><br>
+    <label>Mobile :</label><input type="number"><br><br>
+    </form>
+</fieldset>
+<fieldset style="width:380px">
+    <legend><h4 style="color:tomato">Educational Qualification</h4></legend>
+    <label>Degree:</label>
+    <select>
+        <option>--Select Group--</option>
+        <optgroup label="UG">
+        <option>BE</option>
+        <option>BTech</option>
+        <option>BSc</option>
+        <option>BA</option>
+        <option>BCA</option>
+        <option>BBA</option></optgroup>
+        <optgroup label="PG">
+        <option>ME</option>
+        <option>MTech</option>
+        <option>MSc</option>
+        <option>MA</option>
+        <option>MCA</option>
+        <option>MBA</option></optgroup>
+        <optgroup label="PhD">
+        <option>Engineering</option>
+        <option>Science</option>
+        <option>Management</option></optgroup>
+    </select>
+    <label>Engineering:</label>
+    <select>
+        <option>--Select Group--</option>
+        <option>CSE</option>
+        <option>ECE</option>
+        <option>EEE</option>
+        <option>CIVIL</option>
+        <option>MECH</option>
+    </select>
+</fieldset>
+<br>
+Hobbies:<input type="checkbox">Playing Chess
+<input type="checkbox">Reading Books <br><br>
+Favourite Color:<input type="color">
+<h4 style="color:tomato">Address</h4>
+    <input type="text"><br>
+    Attach Resume: <input type="file">
+    <input type="submit" aria-label="submit">
+</body>
