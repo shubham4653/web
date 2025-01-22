@@ -1,0 +1,45 @@
+.ani{
+    animation: colo 5s infinite;
+}
+@keyframes colo{
+    0%{
+        color: aqua;
+    }
+    25%{
+        color: rgb(255, 0, 0);
+    }
+    50%{
+        color: rgb(21, 255, 0);
+    }
+    75%{
+        color: rgb(238, 255, 0);
+    }
+    100%{
+        color: aqua;
+    }
+}
+body{
+    background-image:url(bgimg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    
+}
+.para{
+    color: aliceblue;
+    line-height: 30pt;
+    column-count: 3;
+    column-gap: 40px;
+    column-rule-style: solid;
+    column-rule-width: 1px;
+    column-width: 100px;
+}
+#ball{
+    animation: bounce 1s infinite;
+}
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    25%{transfrom: rotate(45deg)}
+    50% { transform: translateY(-100px); }
+    100% { transform: translateY(0); }
+}
