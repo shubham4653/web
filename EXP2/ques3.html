@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Merged Cells Table</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            text-align: center;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+        caption {
+            font-style: italic;
+            padding: 10px;
+        }
+        .link {
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <caption>A test table with merged cells</caption>
+        <tr>
+            <th rowspan="2"><a href="#" class="link">Expenses</a></th>
+            <th colspan="2">Average</th>
+            <th rowspan="2">Red<br>eyes</th>
+        </tr>
+        <tr>
+            <th>height</th>
+            <th>weight</th>
+        </tr>
+        <tr>
+            <td>Males</td>
+            <td>1.9</td>
+            <td>0.003</td>
+            <td>40%</td>
+        </tr>
+        <tr>
+            <td>Females</td>
+            <td>1.7</td>
+            <td>0.002</td>
+            <td>43%</td>
+        </tr>
+    </table>
+</body>
+</html>
