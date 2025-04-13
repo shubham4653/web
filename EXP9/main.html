@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercise 9 - JavaScript</title>
+  <style>
+    body { font-family: Arial; margin: 20px; }
+    section { margin-bottom: 40px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
+    h2 { color: #2a4d69; }
+    table, th, td { border: 1px solid black; border-collapse: collapse; padding: 5px; }
+  </style>
+</head>
+<body>
+
+  <h1>Exercise 9 - JavaScript</h1>
+
+  <!-- 1. Temperature Categories -->
+  <section>
+    <h2>1. Temperature Classification (New York)</h2>
+    <button onclick="analyzeTemperatures()">Show Analysis</button>
+    <div id="temperatureTable"></div>
+    <script>
+      function analyzeTemperatures() {
+        const temps = [55,62,68,74,59,45,41,58,60,67,65,78,82,88,91,92,90,93,87,80,78,79,72,68,61,59,55,65];
+        let hot = 0, pleasant = 0, cold = 0;
+        let table = `<table><tr><th>Day</th><th>Temp (°F)</th><th>Category</th></tr>`;
+
+        temps.forEach((temp, i) => {
+          let category = "";
+          if (temp >= 85) {
+            category = "HOT";
+            hot++;
+          } else if (temp >= 60) {
+            category = "PLEASANT";
+            pleasant++;
+          } else {
+            category = "COLD";
+            cold++;
+          }
+          table += `<tr><td>${i + 1}</td><td>${temp}</td><td>${category}</td></tr>`;
+        });
+
+        table += `</table><p><strong>Hot:</strong> ${hot}, <strong>Pleasant:</strong> ${pleasant}, <strong>Cold:</strong> ${cold}</p>`;
+        document.getElementById("temperatureTable").innerHTML = table;
+      }
+    </script>
+  </section>
+
+  <!-- 2. Airline Reservation System -->
+  <section>
+    <h2>2. Airline Seat Reservation System</h2>
+    <button onclick="assignSeat()">Book a Seat</button>
+    <pre id="boardingPass"></pre>
+    <script>
+      const seats = Array(10).fill(0); // 0 = empty, 1 = booked
+      let seatNum = 0;
+
+      function assignSeat() {
+        const name = prompt("Enter passenger name:");
+        const choice = parseInt(prompt("Enter 1 for First Class (1-5), 2 for Economy (6-10):"));
+
+        let sectionStart = (choice === 1) ? 0 : 5;
+        let sectionEnd = (choice === 1) ? 5 : 10;
+
+        let assigned = false;
+        for (let i = sectionStart; i < sectionEnd; i++) {
+          if (seats[i] === 0) {
+            seats[i] = 1;
+            seatNum = i + 1;
+            assigned = true;
+            document.getElementById("boardingPass").innerText =
+              `BOARDING PASS:\nName: ${name}\nSeat No: ${seatNum}\nClass: ${choice === 1 ? 'First Class' : 'Economy'}`;
+            break;
+          }
+        }
+
+        if (!assigned) {
+          const alt = confirm(`Selected class is full. Would you like to book in the ${(choice === 1) ? 'Economy' : 'First Class'} section?`);
+          if (alt) {
+            assignSeatAlt(name, choice);
+          } else {
+            alert("Next flight leaves in 3 hours.");
+          }
+        }
+      }
+
+      function assignSeatAlt(name, originalChoice) {
+        let sectionStart = (originalChoice === 1) ? 5 : 0;
+        let sectionEnd = (originalChoice === 1) ? 10 : 5;
+
+        for (let i = sectionStart; i < sectionEnd; i++) {
+          if (seats[i] === 0) {
+            seats[i] = 1;
+            seatNum = i + 1;
+            document.getElementById("boardingPass").innerText =
+              `BOARDING PASS:\nName: ${name}\nSeat No: ${seatNum}\nClass: ${(originalChoice === 1) ? 'Economy' : 'First Class'}`;
+            return;
+          }
+        }
+
+        alert("All seats are full. Next flight in 3 hours.");
+      }
+    </script>
+  </section>
+
+  <!-- 3. BMI Calculator -->
+  <section>
+    <h2>3. BMI Calculator</h2>
+    <label>Height (in inches): <input type="number" id="height"></label><br>
+    <label>Weight (in pounds): <input type="number" id="weight"></label><br>
+    <button onclick="calculateBMI()">Calculate</button>
+    <script>
+      function calculateBMI() {
+        const h = parseFloat(document.getElementById("height").value);
+        const w = parseFloat(document.getElementById("weight").value);
+        const bmi = (703 * w) / (h * h);
+        let status = "";
+
+        if (bmi < 18.5) status = "Underweight";
+        else if (bmi >= 18.5 && bmi < 25) status = "Ideal Range";
+        else if (bmi >= 25 && bmi < 30) status = "Overweight";
+        else status = "Obese";
+
+        alert(`Your BMI is ${bmi.toFixed(2)} - ${status}`);
+      }
+    </script>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercise 11 - DOM, Events, Form Validation</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    section { margin-bottom: 40px; border: 1px solid #ccc; padding: 15px; border-radius: 8px; }
+    .error { color: red; }
+    #clock { font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<h1>Exercise 11 - JavaScript DOM, Events, Validation</h1>
+
+<!-- 1. Dynamic Elements -->
+<section>
+  <h2>1. Dynamic Elements</h2>
+  <div id="dynamic-area"></div>
+  <script>
+    const area = document.getElementById("dynamic-area");
+
+    // (i) Table
+    const table = document.createElement("table");
+    table.border = 1;
+    for (let i = 0; i < 3; i++) {
+      const row = table.insertRow();
+      for (let j = 0; j < 3; j++) {
+        row.insertCell().textContent = `Row ${i+1} Col ${j+1}`;
+      }
+    }
+    area.appendChild(table);
+
+    // (ii) Button with color change on mouseover
+    const btn = document.createElement("button");
+    btn.textContent = "Hover Me";
+    btn.style.background = "red";
+    btn.onmouseover = () => btn.style.background = "green";
+    area.appendChild(document.createElement("br"));
+    area.appendChild(btn);
+
+    // (iii) Textbox with color change and greeting
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "Focus Me";
+    input.style.background = "green";
+    input.onfocus = () => input.style.background = "yellow";
+    input.onchange = () => alert("Hello there!");
+    area.appendChild(document.createElement("br"));
+    area.appendChild(input);
+
+    // (iv) Add to <ul> on dblclick
+    const newInput = document.createElement("input");
+    newInput.id = "newItem";
+    const newBtn = document.createElement("button");
+    newBtn.textContent = "Add Item";
+    const list = document.createElement("ul");
+    newBtn.ondblclick = () => {
+      const val = newInput.value;
+      if (val) {
+        const li = document.createElement("li");
+        li.textContent = val;
+        list.appendChild(li);
+        newInput.value = "";
+      }
+    };
+    area.appendChild(document.createElement("br"));
+    area.appendChild(newInput);
+    area.appendChild(newBtn);
+    area.appendChild(list);
+
+    // (v) Keypress Counter
+    let count = 0;
+    const inputKey = document.createElement("input");
+    const countDisplay = document.createElement("input");
+    countDisplay.readOnly = true;
+    inputKey.onkeydown = () => countDisplay.value = ++count;
+    area.appendChild(document.createElement("br"));
+    area.appendChild(inputKey);
+    area.appendChild(countDisplay);
+  </script>
+</section>
+
+<!-- 2. Event Listeners -->
+<section>
+  <h2>2. Event Listeners</h2>
+
+  <!-- (i) Stopwatch -->
+  <p><strong>Stopwatch:</strong></p>
+  <span id="stopwatch">0</span> seconds<br>
+  <button id="start">Start</button>
+  <button id="stop">Stop</button>
+  <button id="reset">Reset</button>
+
+  <!-- (ii) DOB & Age -->
+  <p><strong>DOB to Age:</strong></p>
+  <input type="date" id="dob">
+  <span id="age"></span>
+
+  <!-- (iii) Character Counter -->
+  <p><strong>Textarea Character Count:</strong></p>
+  <textarea id="bio" rows="4" cols="30"></textarea><br>
+  <span id="charCount">0</span> characters
+
+  <script>
+    // Stopwatch
+    let stopwatch = 0, interval;
+    document.getElementById("start").addEventListener("click", () => {
+      if (!interval) interval = setInterval(() => {
+        document.getElementById("stopwatch").textContent = ++stopwatch;
+      }, 1000);
+    });
+    document.getElementById("stop").addEventListener("click", () => {
+      clearInterval(interval);
+      interval = null;
+    });
+    document.getElementById("reset").addEventListener("click", () => {
+      clearInterval(interval);
+      interval = null;
+      stopwatch = 0;
+      document.getElementById("stopwatch").textContent = 0;
+    });
+
+    // Age on mouseover
+    document.getElementById("dob").addEventListener("mouseover", () => {
+      const dob = new Date(document.getElementById("dob").value);
+      const diff = new Date() - dob;
+      const age = Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
+      document.getElementById("age").textContent = isNaN(age) ? "" : `Age: ${age}`;
+    });
+
+    // Char counter
+    document.getElementById("bio").addEventListener("input", e => {
+      document.getElementById("charCount").textContent = e.target.value.length;
+    });
+  </script>
+</section>
+
+<!-- 3. Form Validation -->
+<section>
+  <h2>3. Form Validation</h2>
+
+  <div id="clock">Time: </div>
+  <form id="regForm" onsubmit="return validateForm()">
+    Name* <input type="text" name="name" id="name"><br>
+    Address* <textarea name="address" id="address"></textarea><br>
+    Zip* <input type="text" name="zip" id="zip"><br>
+    Phone* <input type="text" name="phone" id="phone"><br>
+    Email* <input type="email" name="email" id="email"><br>
+    Password* <input type="password" name="password" id="password"><br>
+    PAN No* <input type="text" name="pan" id="pan"><br>
+    Gender* <input type="radio" name="gender" value="Male"> Male
+            <input type="radio" name="gender" value="Female"> Female<br>
+    Country* <select name="country">
+      <option value="">--Select--</option>
+      <option>India</option>
+      <option>USA</option>
+    </select><br>
+    Preferences* <input type="checkbox" name="prefs" value="news"> News
+                 <input type="checkbox" name="prefs" value="alerts"> Alerts<br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    // Clock timer
+    function updateClock() {
+      const now = new Date();
+      document.getElementById("clock").textContent = "Time: " + now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+
+    function validateForm() {
+      const form = document.forms["regForm"];
+      const name = form["name"].value.trim();
+      const address = form["address"].value.trim();
+      const zip = form["zip"].value;
+      const phone = form["phone"].value;
+      const email = form["email"].value;
+      const password = form["password"].value;
+      const pan = form["pan"].value;
+
+      if (!name || !address || !zip || !phone || !email || !password || !pan) {
+        alert("Please fill all mandatory fields.");
+        return false;
+      }
+      if (name.length > 15) {
+        alert("Name must be under 15 characters.");
+        return false;
+      }
+      if (isNaN(zip) || zip.length !== 6) {
+        alert("Zip must be a 6-digit number.");
+        return false;
+      }
+      if (isNaN(phone) || phone.length !== 10) {
+        alert("Phone must be a 10-digit number.");
+        return false;
+      }
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if (!emailPattern.test(email)) {
+        alert("Invalid email format.");
+        return false;
+      }
+      const passPattern = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[\W_]).{8,15}$/;
+      if (!passPattern.test(password)) {
+        alert("Password must contain 8–15 chars, a number, a letter, and a special character.");
+        return false;
+      }
+      const panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+      if (!panPattern.test(pan)) {
+        alert("Invalid PAN format (e.g., ABCDE1234F).");
+        return false;
+      }
+
+      const gender = form["gender"].value;
+      const country = form["country"].value;
+      const prefs = form["prefs"];
+      let prefsChecked = false;
+      for (let i = 0; i < prefs.length; i++) {
+        if (prefs[i].checked) {
+          prefsChecked = true;
+          break;
+        }
+      }
+
+      if (!gender || !country || !prefsChecked) {
+        alert("Select gender, country, and at least one preference.");
+        return false;
+      }
+
+      alert("Form submitted successfully!");
+      return true;
+    }
+  </script>
+</section>
+
+</body>
+</html>

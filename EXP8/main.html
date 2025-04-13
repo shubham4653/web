@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercise 8 - JavaScript Basics</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    section { margin-bottom: 40px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
+    h2 { color: #2a4d69; }
+    button { margin-top: 10px; }
+    input { margin: 5px; }
+  </style>
+</head>
+<body>
+
+  <h1>Exercise 8 - JavaScript Basics</h1>
+
+  <!-- 1. Basic Calculator -->
+  <section>
+    <h2>1. Basic Calculator</h2>
+    <button onclick="calculator()">Open Calculator</button>
+    <script>
+      function calculator() {
+        let num1 = parseFloat(prompt("Enter first number:"));
+        let num2 = parseFloat(prompt("Enter second number:"));
+        let result = 
+          `Addition: ${num1 + num2}\n` +
+          `Subtraction: ${num1 - num2}\n` +
+          `Multiplication: ${num1 * num2}\n` +
+          `Division: ${num1 / num2}\n` +
+          `Modulus: ${num1 % num2}`;
+        alert(result);
+      }
+    </script>
+  </section>
+
+  <!-- 2. Age Eligibility -->
+  <section>
+    <h2>2. Check Driving Eligibility</h2>
+    <button onclick="checkAge()">Check Age</button>
+    <script>
+      function checkAge() {
+        let age = parseInt(prompt("Enter your age:"));
+        if (age >= 18) {
+          alert("You are eligible to drive.");
+        } else {
+          alert("You are not eligible to drive.");
+        }
+      }
+    </script>
+  </section>
+
+  <!-- 3. Student Confirmation -->
+  <section>
+    <h2>3. Confirm Student Status</h2>
+    <button onclick="confirmStudent()">Check Student</button>
+    <script>
+      function confirmStudent() {
+        let regNo = prompt("Enter your registration number:");
+        if (confirm("Are you a student?")) {
+          alert("Student confirmed. Reg No: " + regNo);
+        } else {
+          alert("Not a student.");
+        }
+      }
+    </script>
+  </section>
+
+  <!-- 4. Labour Cost Calculation -->
+  <section>
+    <h2>4. Labour Cost Calculator</h2>
+    <button onclick="calculateCharges()">Calculate Labour Cost</button>
+    <script>
+      function calculateCharges() {
+        const rate = 45;
+        let hours = parseFloat(prompt("Enter number of hours worked:"));
+        let materialCost = parseFloat(prompt("Enter cost of materials:"));
+        let labourCost = rate * hours;
+        let total = labourCost + materialCost;
+        alert(`Labour Cost: Rs.${labourCost.toFixed(2)}\nTotal Charge: Rs.${total.toFixed(2)}`);
+      }
+    </script>
+  </section>
+
+  <!-- 5. Display Reg No and Name -->
+  <section>
+    <h2>5. Display Reg No and Name</h2>
+    <button onclick="displayInfo()">Enter & Display Info</button>
+    <p id="regno"></p>
+    <p id="name"></p>
+    <script>
+      function displayInfo() {
+        let reg = prompt("Enter Registration Number:");
+        let name = prompt("Enter Name:");
+        document.write(`<p style="color:blue; font-weight:bold;">Registration Number: ${reg}</p>`);
+        document.getElementById("name").innerHTML = `<span style="color:green; font-style:italic;">Name: ${name}</span>`;
+      }
+    </script>
+  </section>
+
+  <!-- 6. Circus Ticket Booth -->
+  <section>
+    <h2>6. Circus Ticket Booth</h2>
+    <label>Adults: <input type="number" id="adults" value="0"></label><br>
+    <label>Children: <input type="number" id="children" value="0"></label><br>
+    <button onclick="calculateTotal()">Total</button>
+    <input type="text" id="totalAmount" readonly>
+    <script>
+      function calculateTotal() {
+        let adult = parseInt(document.getElementById("adults").value);
+        let child = parseInt(document.getElementById("children").value);
+        let total = (adult * 100) + (child * 50); // assuming Rs.100 per adult, Rs.50 per child
+        document.getElementById("totalAmount").value = "Rs. " + total;
+      }
+    </script>
+  </section>
+
+</body>
+</html>

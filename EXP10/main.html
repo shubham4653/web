@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercise 10 - JavaScript Functions and Form</title>
+  <style>
+    body { font-family: Arial; margin: 20px; }
+    section { border: 1px solid #ccc; padding: 15px; margin-bottom: 30px; border-radius: 8px; }
+    .input-field { margin: 5px 0; padding: 5px; }
+  </style>
+</head>
+<body>
+
+<h1 id="main-title">Original Title</h1>
+
+<!-- 1. Patient Data Functions -->
+<section>
+  <h2>1. Patient Data Operations</h2>
+  <button onclick="sortPatients()">Sort by Age (Descending)</button>
+  <button onclick="checkPatientId()">Check Patient ID</button>
+  <button onclick="filterByAge()">Filter by Age Range</button>
+  <pre id="output1"></pre>
+  <script>
+    const patients = [
+      { id: 1, name: "Alen", age: 39 },
+      { id: 2, name: "Deena", age: 47 },
+      { id: 3, name: "Diana", age: 21 },
+      { id: 4, name: "Jack", age: 54 },
+      { id: 5, name: "Jain", age: 23 },
+      { id: 6, name: "Kelvin", age: 61 },
+      { id: 7, name: "Louis", age: 69 },
+      { id: 8, name: "Rex", age: 49 }
+    ];
+
+    function sortPatients() {
+      const sorted = [...patients].sort((a, b) => b.age - a.age);
+      displayPatients(sorted, "Sorted by Age (Descending):");
+    }
+
+    function checkPatientId() {
+      const id = parseInt(prompt("Enter Patient ID to check:"));
+      const exists = patients.some(p => p.id === id);
+      alert(exists ? "Patient ID exists." : "Patient ID not found.");
+    }
+
+    function filterByAge() {
+      const min = parseInt(prompt("Minimum age:"));
+      const max = parseInt(prompt("Maximum age:"));
+      const filtered = patients.filter(p => p.age >= min && p.age <= max);
+      displayPatients(filtered, `Patients aged between ${min} and ${max}:`);
+    }
+
+    function displayPatients(data, title) {
+      const output = data.map(p => `${p.id} - ${p.name} (${p.age})`).join("\n");
+      document.getElementById("output1").textContent = `${title}\n${output}`;
+    }
+  </script>
+</section>
+
+<!-- 2. DOM Selection Methods -->
+<section>
+  <h2>2. DOM Selection Methods</h2>
+  <input type="text" name="username" placeholder="Username"><br>
+  <label><input type="radio" name="gender" value="Male"> Male</label>
+  <label><input type="radio" name="gender" value="Female"> Female</label><br><br>
+
+  <p class="info">Info paragraph 1</p>
+  <p class="info">Info paragraph 2</p>
+  <p class="info">Info paragraph 3</p>
+
+  <ul>
+    <li>Item A</li>
+    <li>Item B</li>
+    <li>Item C</li>
+  </ul>
+
+  <input type="checkbox" class="hobby" value="Reading"> Reading
+  <input type="checkbox" class="hobby" value="Music"> Music
+  <input type="checkbox" class="hobby" value="Travel"> Travel
+
+  <div class="input-field">Field 1</div>
+  <div class="input-field">Field 2</div>
+
+  <button onclick="runDomSelections()">Run DOM Selection Tasks</button>
+  <script>
+    function runDomSelections() {
+      // a. getElementById
+      document.getElementById("main-title").innerText = "Updated Title";
+
+      // b. getElementsByName
+      document.getElementsByName("username")[0].value = "John Doe";
+      const radios = document.getElementsByName("gender");
+      for (let r of radios) {
+        if (r.checked) {
+          console.log("Selected Gender:", r.value);
+        }
+      }
+
+      // c. getElementsByTagName
+      const ps = document.getElementsByTagName("p");
+      console.log("Total <p> tags:", ps.length);
+      const lis = document.getElementsByTagName("li");
+      for (let li of lis) console.log("List Item:", li.textContent);
+
+      // d. getElementsByClassName
+      const inputs = document.getElementsByClassName("input-field");
+      for (let el of inputs) el.style.backgroundColor = "lightblue";
+
+      // e. querySelector
+      document.querySelector("p.info").innerText = "This is the first info paragraph";
+      document.querySelector('input[name="gender"]').checked = true;
+
+      // f. querySelectorAll
+      document.querySelectorAll("p.info").forEach(p => console.log("Info:", p.innerText));
+      document.querySelectorAll(".hobby").forEach(cb => {
+        cb.checked = true;
+        console.log("Checked hobby:", cb.value);
+      });
+    }
+  </script>
+</section>
+
+<!-- 3. Order Form with Receipt -->
+<section>
+  <h2>3. Order Form</h2>
+  <form onsubmit="showReceipt(event)">
+    Name: <input type="text" id="custName"><br>
+    Product: <input type="text" id="product"><br>
+    Quantity: <input type="number" id="qty"><br>
+    Price per unit: <input type="number" id="price"><br>
+    <button type="submit">Submit Order</button>
+  </form>
+  <pre id="receipt"></pre>
+
+  <script>
+    function showReceipt(event) {
+      event.preventDefault();
+      const name = document.getElementById("custName").value;
+      const product = document.getElementById("product").value;
+      const qty = parseInt(document.getElementById("qty").value);
+      const price = parseFloat(document.getElementById("price").value);
+      const total = qty * price;
+
+      document.getElementById("receipt").textContent = 
+        `----- Receipt -----\nCustomer: ${name}\nProduct: ${product}\nQuantity: ${qty}\nUnit Price: Rs.${price}\nTotal: Rs.${total}`;
+    }
+  </script>
+</section>
+
+</body>
+</html>

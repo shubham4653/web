@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercise 12 - Canvas, Plotly, Z-Index</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body { font-family: Arial; margin: 20px; }
+    section { margin-bottom: 50px; border: 1px solid #ccc; padding: 15px; border-radius: 8px; }
+    canvas { border: 1px solid black; display: block; margin-top: 10px; }
+    .z-box { width: 100px; height: 100px; position: absolute; }
+    #box1 { background: red; top: 100px; left: 100px; z-index: 1; }
+    #box2 { background: green; top: 130px; left: 130px; z-index: 2; }
+    #box3 { background: blue; top: 160px; left: 160px; z-index: 3; }
+  </style>
+</head>
+<body>
+
+<h1>Exercise 12 - Canvas, Charts, Z-Index</h1>
+
+<!-- 1. Canvas Scene -->
+<section>
+  <h2>1. Canvas Scene Drawing</h2>
+  <canvas id="sceneCanvas" width="600" height="400"></canvas>
+  <script>
+    const canvas = document.getElementById("sceneCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Oval Pond
+    ctx.fillStyle = "#89CFF0";
+    ctx.beginPath();
+    ctx.ellipse(300, 350, 120, 40, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Boat (Quadrilateral)
+    ctx.fillStyle = "#8B4513";
+    ctx.beginPath();
+    ctx.moveTo(250, 300);
+    ctx.quadraticCurveTo(300, 320, 350, 300);
+    ctx.lineTo(340, 290);
+    ctx.lineTo(260, 290);
+    ctx.closePath();
+    ctx.fill();
+
+    // Duck - Body & Head
+    ctx.fillStyle = "yellow";
+    ctx.beginPath();
+    ctx.arc(200, 360, 15, 0, 2 * Math.PI); // body
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(185, 355, 8, 0, 2 * Math.PI); // head
+    ctx.fill();
+
+    // Sun
+    ctx.fillStyle = "orange";
+    ctx.beginPath();
+    ctx.arc(500, 80, 30, 0, 2 * Math.PI);
+    ctx.fill();
+    for (let i = 0; i < 12; i++) {
+      const angle = i * 30 * Math.PI / 180;
+      const x1 = 500 + Math.cos(angle) * 30;
+      const y1 = 80 + Math.sin(angle) * 30;
+      const x2 = 500 + Math.cos(angle) * 50;
+      const y2 = 80 + Math.sin(angle) * 50;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+
+    // House
+    ctx.fillStyle = "#D2691E";
+    ctx.fillRect(80, 250, 60, 60); // base
+    ctx.fillStyle = "#A52A2A";
+    ctx.beginPath();
+    ctx.moveTo(80, 250);
+    ctx.lineTo(110, 220);
+    ctx.lineTo(140, 250);
+    ctx.closePath();
+    ctx.fill();
+
+    // Flower
+    ctx.beginPath();
+    ctx.moveTo(440, 300); // stem
+    ctx.lineTo(440, 350);
+    ctx.strokeStyle = "green";
+    ctx.stroke();
+
+    ctx.beginPath(); // leaves
+    ctx.ellipse(430, 320, 10, 5, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(450, 320, 10, 5, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.beginPath(); // petals
+    ctx.fillStyle = "pink";
+    ctx.ellipse(440, 290, 15, 15, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Stones
+    ctx.fillStyle = "#808080";
+    for (let i = 0; i < 6; i++) {
+      ctx.beginPath();
+      ctx.arc(100 + i * 20, 390, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+  </script>
+</section>
+
+<!-- 2. Boat Animation -->
+<section>
+  <h2>2. Boat Animation</h2>
+  <canvas id="boatCanvas" width="600" height="100"></canvas>
+  <script>
+    const boatCanvas = document.getElementById("boatCanvas");
+    const boatCtx = boatCanvas.getContext("2d");
+    let bx = 0;
+    function drawBoat() {
+      boatCtx.clearRect(0, 0, 600, 100);
+      boatCtx.fillStyle = "#8B4513";
+      boatCtx.beginPath();
+      boatCtx.moveTo(bx, 60);
+      boatCtx.quadraticCurveTo(bx + 25, 80, bx + 50, 60);
+      boatCtx.lineTo(bx + 40, 50);
+      boatCtx.lineTo(bx + 10, 50);
+      boatCtx.closePath();
+      boatCtx.fill();
+      bx += 2;
+      if (bx > 600) bx = -50;
+    }
+    setInterval(drawBoat, 30);
+  </script>
+</section>
+
+<!-- 3. Analog Clock -->
+<section>
+  <h2>3. Analog Clock</h2>
+  <canvas id="clockCanvas" width="300" height="300"></canvas>
+  <script>
+    const clock = document.getElementById("clockCanvas");
+    const clockCtx = clock.getContext("2d");
+    function drawClock() {
+      const now = new Date();
+      const sec = now.getSeconds();
+      const min = now.getMinutes();
+      const hr = now.getHours();
+
+      clockCtx.clearRect(0, 0, 300, 300);
+      clockCtx.beginPath();
+      clockCtx.arc(150, 150, 100, 0, 2 * Math.PI);
+      clockCtx.fillStyle = "#f0f0f0";
+      clockCtx.fill();
+      clockCtx.strokeStyle = "#000";
+      clockCtx.stroke();
+
+      for (let i = 1; i <= 12; i++) {
+        const angle = i * 30 * Math.PI / 180;
+        const x = 150 + Math.cos(angle - Math.PI / 2) * 85;
+        const y = 150 + Math.sin(angle - Math.PI / 2) * 85;
+        clockCtx.fillText(i, x - 5, y + 5);
+      }
+
+      const secAngle = (sec * 6) * Math.PI / 180;
+      const minAngle = (min * 6 + sec * 0.1) * Math.PI / 180;
+      const hrAngle = ((hr % 12) * 30 + min * 0.5) * Math.PI / 180;
+
+      function drawHand(angle, length, width) {
+        clockCtx.beginPath();
+        clockCtx.moveTo(150, 150);
+        clockCtx.lineTo(150 + length * Math.cos(angle - Math.PI / 2),
+                        150 + length * Math.sin(angle - Math.PI / 2));
+        clockCtx.lineWidth = width;
+        clockCtx.stroke();
+      }
+
+      drawHand(hrAngle, 50, 5);
+      drawHand(minAngle, 70, 3);
+      drawHand(secAngle, 90, 1);
+      clockCtx.beginPath();
+      clockCtx.arc(150, 150, 4, 0, 2 * Math.PI);
+      clockCtx.fillStyle = "black";
+      clockCtx.fill();
+    }
+    setInterval(drawClock, 1000);
+  </script>
+</section>
+
+<!-- 4. Plotly Charts -->
+<section>
+  <h2>4. Plotly Charts</h2>
+  <div id="barChart"></div>
+  <div id="lineChart"></div>
+  <div id="pieChart"></div>
+  <div id="donutChart"></div>
+  <script>
+    Plotly.newPlot("barChart", [{
+      x: ["A", "B", "C"],
+      y: [10, 15, 13],
+      type: "bar",
+      marker: { color: ['red', 'green', 'blue'] }
+    }], { title: "Bar Chart", xaxis: { title: "Category" }, yaxis: { title: "Value" } });
+
+    Plotly.newPlot("lineChart", [{
+      x: [1, 2, 3],
+      y: [2, 6, 3],
+      mode: "lines+markers",
+      marker: { color: "purple" }
+    }], { title: "Line Chart", xaxis: { title: "Time" }, yaxis: { title: "Measurement" } });
+
+    Plotly.newPlot("pieChart", [{
+      values: [19, 26, 55],
+      labels: ['Red', 'Green', 'Blue'],
+      type: 'pie'
+    }], { title: "Pie Chart" });
+
+    Plotly.newPlot("donutChart", [{
+      values: [10, 20, 30],
+      labels: ['A', 'B', 'C'],
+      hole: 0.4,
+      type: 'pie'
+    }], { title: "Donut Chart" });
+  </script>
+</section>
+
+<!-- 5. Z-Index Manipulation -->
+<section>
+  <h2>5. Z-Index Manipulation</h2>
+  <div id="box1" class="z-box">Box 1</div>
+  <div id="box2" class="z-box">Box 2</div>
+  <div id="box3" class="z-box">Box 3</div>
+  <br><br>
+  Change Z-Index:
+  <select onchange="changeZ('box1', this.value)">
+    <option value="1">Box 1 - Z 1</option>
+    <option value="2">Box 1 - Z 2</option>
+    <option value="3">Box 1 - Z 3</option>
+  </select>
+  <select onchange="changeZ('box2', this.value)">
+    <option value="1">Box 2 - Z 1</option>
+    <option value="2">Box 2 - Z 2</option>
+    <option value="3">Box 2 - Z 3</option>
+  </select>
+  <select onchange="changeZ('box3', this.value)">
+    <option value="1">Box 3 - Z 1</option>
+    <option value="2">Box 3 - Z 2</option>
+    <option value="3">Box 3 - Z 3</option>
+  </select>
+
+  <script>
+    function changeZ(id, z) {
+      document.getElementById(id).style.zIndex = z;
+    }
+  </script>
+</section>
+
+</body>
+</html>
